@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Dictionary
 {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
 

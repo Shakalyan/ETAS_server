@@ -20,10 +20,12 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String register(@RequestBody User user)
-    {
+    public boolean register(@RequestBody User user) {
+        if (userRepo.findByLogin(user.getLogin()).isPresent())
+            return false;
+        user.setId(null);
         userRepo.save(user);
-        return "Saved!";
+        return true;
     }
 
 }

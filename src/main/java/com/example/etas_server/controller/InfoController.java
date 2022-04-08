@@ -29,8 +29,7 @@ public class InfoController {
     }
 
     @GetMapping("users/{id}")
-    public String printUser(@PathVariable int id, @RequestParam boolean pr_dict)
-    {
+    public String printUser(@PathVariable int id, @RequestParam boolean pr_dict) {
         var user = userRepo.findById((long)id);
         if (!user.isPresent())
             return String.format("User with id %d doesn't exist", id);
