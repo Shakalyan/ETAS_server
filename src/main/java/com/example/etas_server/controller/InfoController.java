@@ -6,6 +6,8 @@ import com.example.etas_server.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("data")
 public class InfoController {
@@ -20,7 +22,7 @@ public class InfoController {
     @GetMapping("users")
     public String printAllUsers() {
         StringBuilder info = new StringBuilder();
-        for (var user : userRepo.findAll())
+        for (User user : userRepo.findAll())
         {
             info.append(user.toString()).append("<br>");
         }
@@ -30,7 +32,7 @@ public class InfoController {
 
     @GetMapping("users/{id}")
     public String printUser(@PathVariable int id, @RequestParam boolean pr_dict) {
-        var user = userRepo.findById((long)id);
+        Optional<User> user = userRepo.findById((long)id);
         if (!user.isPresent())
             return String.format("User with id %d doesn't exist", id);
 

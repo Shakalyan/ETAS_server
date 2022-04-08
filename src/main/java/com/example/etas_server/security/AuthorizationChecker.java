@@ -1,8 +1,11 @@
 package com.example.etas_server.security;
 
+import com.example.etas_server.model.User;
 import com.example.etas_server.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class AuthorizationChecker
@@ -16,7 +19,7 @@ public class AuthorizationChecker
     }
 
     public boolean checkPassword(Long user_id, String password) {
-        var user = userRepo.findById(user_id);
+        Optional<User> user = userRepo.findById(user_id);
         return user.isPresent() && user.get().getPassword().equals(password);
     }
 

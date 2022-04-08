@@ -36,7 +36,7 @@ public class DictionaryController {
         dictionary.setUser(user);
         dictionaryRepo.save(dictionary);
 
-        for (var dict : user.getDictionaries())
+        for (Dictionary dict : user.getDictionaries())
             System.out.println(dict.toString());
 
         return "Dictionary has been added";

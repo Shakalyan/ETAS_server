@@ -5,6 +5,8 @@ import com.example.etas_server.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("login/")
 public class AuthenticationController {
@@ -19,7 +21,7 @@ public class AuthenticationController {
     @PostMapping
     public boolean authenticate(@RequestBody User user)
     {
-        var eUser = userRepo.findByLogin(user.getLogin());
+        Optional<User> eUser = userRepo.findByLogin(user.getLogin());
         return eUser.isPresent() && eUser.get().getPassword().equals(user.getPassword());
     }
 
