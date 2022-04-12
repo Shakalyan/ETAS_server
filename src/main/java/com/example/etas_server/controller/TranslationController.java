@@ -5,6 +5,7 @@ import com.example.etas_server.model.Translation;
 import com.example.etas_server.repository.DictionaryRepo;
 import com.example.etas_server.repository.TranslationRepo;
 import com.example.etas_server.security.AuthorizationChecker;
+import com.example.etas_server.service.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,14 +20,17 @@ public class TranslationController {
     TranslationRepo translationRepo;
     DictionaryRepo dictionaryRepo;
     AuthorizationChecker authorizationChecker;
+    TranslationService translationService;
 
     @Autowired
     public TranslationController(TranslationRepo translationRepo,
                                  DictionaryRepo dictionaryRepo,
-                                 AuthorizationChecker authorizationChecker) {
+                                 AuthorizationChecker authorizationChecker,
+                                 TranslationService translationService) {
         this.translationRepo = translationRepo;
         this.dictionaryRepo = dictionaryRepo;
         this.authorizationChecker = authorizationChecker;
+        this.translationService = translationService;
     }
 
     @GetMapping
@@ -63,6 +67,13 @@ public class TranslationController {
         translation.setDictionary(dictionary.get());
         translationRepo.save(translation);
         return true;
+    }
+
+    @PostMapping("translate")
+    public String translate(@RequestParam String sentence,
+                            @RequestParam String source,
+                            @RequestParam String target) {
+        return translationService.getTranslation(sentence, source, target);
     }
 
 }
