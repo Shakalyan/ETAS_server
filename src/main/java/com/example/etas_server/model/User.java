@@ -1,5 +1,7 @@
 package com.example.etas_server.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +21,7 @@ public class User
     @Column(name="password")
     private String password;
 
+    @JsonIgnore
     @OneToMany(mappedBy="user")
     private Set<Dictionary> dictionaries;
 

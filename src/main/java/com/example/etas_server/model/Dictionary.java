@@ -1,6 +1,9 @@
 package com.example.etas_server.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="dicts")
@@ -17,6 +20,10 @@ public class Dictionary
     @ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinColumn(name="user_id")
     private User user;
+
+    @JsonIgnore
+    @OneToMany(mappedBy="dictionary")
+    private Set<Translation> translations;
 
     public Dictionary() {
 
@@ -48,6 +55,14 @@ public class Dictionary
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<Translation> getTranslations() {
+        return translations;
+    }
+
+    public void setTranslations(Set<Translation> translations) {
+        this.translations = translations;
     }
 
     @Override

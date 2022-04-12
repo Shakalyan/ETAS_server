@@ -25,8 +25,8 @@ public class DictionaryController {
         this.dictionaryRepo = dictionaryRepo;
     }
 
-    @PostMapping("/{user_id}")
-    public String addDictionary(@PathVariable Long user_id,
+    @PostMapping
+    public String addDictionary(@RequestParam long user_id,
                                 @RequestParam String user_password,
                                 @RequestBody Dictionary dictionary) {
         if (!authorizationChecker.checkPassword(user_id, user_password))
