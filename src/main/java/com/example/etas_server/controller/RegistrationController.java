@@ -1,12 +1,10 @@
 package com.example.etas_server.controller;
 
+import com.example.etas_server.dto.Response;
 import com.example.etas_server.model.User;
 import com.example.etas_server.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("registration")
@@ -20,12 +18,12 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public boolean register(@RequestBody User user) {
+    public @ResponseBody Response register(@RequestBody User user) {
         if (userRepo.findByLogin(user.getLogin()).isPresent())
-            return false;
+            return new Response(-1, "User with this login already exists");
         user.setId(null);
         userRepo.save(user);
-        return true;
+        return new Response(200, "Successfully registered");
     }
 
 }

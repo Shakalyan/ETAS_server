@@ -1,11 +1,15 @@
 package com.example.etas_server.controller;
 
 import com.example.etas_server.model.Dictionary;
+import com.example.etas_server.model.Translation;
 import com.example.etas_server.model.User;
+import com.example.etas_server.repository.DictionaryRepo;
 import com.example.etas_server.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -13,10 +17,13 @@ import java.util.Optional;
 public class InfoController {
 
     UserRepo userRepo;
+    DictionaryRepo dictionaryRepo;
 
     @Autowired
-    public InfoController(UserRepo userRepo) {
+    public InfoController(UserRepo userRepo,
+                          DictionaryRepo dictionaryRepo) {
         this.userRepo = userRepo;
+        this.dictionaryRepo = dictionaryRepo;
     }
 
     @GetMapping("users")
@@ -43,6 +50,18 @@ public class InfoController {
                 response.append(d.getName());
         }
 
+        return response.toString();
+    }
+
+    @GetMapping("dictionaries")
+    public String printDictionaries() {
+        StringBuilder response = new StringBuilder();
+        for(Dictionary dict : dictionaryRepo.findAll()) {
+            response.append(dict.toString()).append("<br>Translations:<br>");
+            for (Translation tr : dict.getTranslations())
+                response.append(tr.toString()).append("<br>");
+            response.append("<br>");
+        }
         return response.toString();
     }
 

@@ -1,5 +1,6 @@
 package com.example.etas_server.controller;
 
+import com.example.etas_server.dto.Response;
 import com.example.etas_server.model.User;
 import com.example.etas_server.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,14 @@ public class AuthenticationController {
     }
 
     @PostMapping
-    public boolean authenticate(@RequestBody User user)
+    public @ResponseBody Response authenticate(@RequestBody User user)
     {
         Optional<User> eUser = userRepo.findByLogin(user.getLogin());
-        return eUser.isPresent() && eUser.get().getPassword().equals(user.getPassword());
+        if(!eUser.isPresent())
+            return new Response(-1, "User with this login doesn't exist");
+        if(!eUser.get().getPassword().equals(user.getPassword()))
+            return new Response(-1, "Incorrect password");
+        return new Response(200, "Successfully authenticated");
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.etas_server.service;
 
 import com.example.etas_server.configuration.TranslationAPIConfig;
+import com.example.etas_server.dto.Response;
 import com.example.etas_server.dto.TranslationRequest;
 import com.example.etas_server.dto.TranslationResponse;
 import com.google.gson.Gson;
@@ -26,7 +27,7 @@ public class TranslationService {
         this.translationAPIConfig = translationAPIConfig;
     }
 
-    public String getTranslation(String sentenceToTranslate, String sourceLan, String targetLan) {
+    public Response getTranslation(String sentenceToTranslate, String sourceLan, String targetLan) {
         TranslationRequest translationRequest = new TranslationRequest(sentenceToTranslate, sourceLan, targetLan);
         String json = new Gson().toJson(translationRequest);
         String domain = translationAPIConfig.getDomain();
@@ -53,9 +54,9 @@ public class TranslationService {
                 response.append(inputLine);
             }
             TranslationResponse translationResponse = new Gson().fromJson(response.toString(), TranslationResponse.class);
-            return translationResponse.getTranslation();
+            return new Response(200, translationResponse.getTranslation());
         } catch (IOException e) {
-            return e.getMessage();
+            return new Response(-1, e.getMessage());
         } finally {
             if(connection != null)
                 connection.disconnect();
