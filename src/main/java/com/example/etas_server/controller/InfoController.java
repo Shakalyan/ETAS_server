@@ -31,7 +31,13 @@ public class InfoController {
         StringBuilder info = new StringBuilder();
         for (User user : userRepo.findAll())
         {
-            info.append(user.toString()).append("<br>");
+            info.append(user.toString()).append("<br>Dictionaries:<br>");
+            for (Dictionary d : user.getDictionaries()) {
+                info.append(d.getName()).append("<br>Translations:<br>");
+                for (Translation t : d.getTranslations())
+                    info.append(t).append("<br>");
+            }
+            info.append("<br><br>");
         }
         System.out.print(info);
         return info.toString();

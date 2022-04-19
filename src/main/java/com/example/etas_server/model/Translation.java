@@ -17,7 +17,7 @@ public class Translation {
     @Column(name="sl_value")
     private String slValue;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="dict_id")
     private Dictionary dictionary;
 

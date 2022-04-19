@@ -27,8 +27,7 @@ public class TranslationService {
         this.translationAPIConfig = translationAPIConfig;
     }
 
-    public Response getTranslation(String sentenceToTranslate, String sourceLan, String targetLan) {
-        TranslationRequest translationRequest = new TranslationRequest(sentenceToTranslate, sourceLan, targetLan);
+    public Response getTranslation(TranslationRequest translationRequest) {
         String json = new Gson().toJson(translationRequest);
         String domain = translationAPIConfig.getDomain();
         String APIHost = translationAPIConfig.getAPIHost();

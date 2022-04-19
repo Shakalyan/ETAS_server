@@ -17,7 +17,7 @@ public class Dictionary
     @Column(name="name")
     private String name;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="user_id")
     private User user;
 

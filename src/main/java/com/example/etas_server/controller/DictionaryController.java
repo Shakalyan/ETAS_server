@@ -1,5 +1,6 @@
 package com.example.etas_server.controller;
 
+import com.example.etas_server.dto.Request;
 import com.example.etas_server.dto.Response;
 import com.example.etas_server.model.Dictionary;
 import com.example.etas_server.model.User;
@@ -31,13 +32,12 @@ public class DictionaryController {
     }
 
     @PostMapping
-    public @ResponseBody Response add(@RequestParam("user_id") long user_id,
-                                      @RequestParam("user_pswd") String user_password,
-                                      @RequestBody Dictionary dictionary) {
-        if (!authorizationChecker.checkPassword(user_id, user_password))
+    public @ResponseBody Response add(@RequestBody Request<Dictionary> request) {
+        if (!authorizationChecker.checkPassword(request.getUser().getId(), request.getUser().getPassword()))
             return new Response(-1, "Incorrect user id or password");
 
-        User user = userRepo.findById(user_id).get();
+        User user = userRepo.findById(request.getUser().getId()).get();
+        Dictionary dictionary = request.getData();
         dictionary.setUser(user);
         dictionaryRepo.save(dictionary);
 
@@ -48,14 +48,14 @@ public class DictionaryController {
     }
 
     @DeleteMapping
-    public @ResponseBody Response delete(@RequestParam("user_id") long userId,
-                                         @RequestParam("user_pswd") String userPassword,
-                                         @RequestParam("dict_id") long dictId) {
+    public @ResponseBody Response deleteById(@RequestBody Request<Long> request) {
 
-        if(!authorizationChecker.checkPassword(userId, userPassword))
+        if(!authorizationChecker.checkPassword(request.getUser().getId(), request.getUser().getPassword()))
             return new Response(-1, "Incorrect user_id or password");
 
-        User user = userRepo.findById(userId).get();
+        User user = userRepo.findById(request.getUser().getId()).get();
+        Long dictId = request.getData();
+
         if(!user.getDictionaries().removeIf(d -> d.getId().equals(dictId)))
             return new Response(-1, "User doesn't have such a dictionary");
 
