@@ -5,6 +5,8 @@ import com.example.etas_server.dto.Response;
 import com.example.etas_server.model.User;
 import com.example.etas_server.repository.UserRepo;
 import com.example.etas_server.security.AuthorizationChecker;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +29,11 @@ public class AuthenticationController {
     @PostMapping
     public @ResponseBody Response authenticate(@RequestBody Request<Object> request)
     {
-        if(authorizationChecker.checkPassword(request.getUser().getId(), request.getUser().getPassword()))
-            return new Response(200, "Successfully authenticated");
+        Optional<User> user = userRepo.findByLogin(request.getUser().getLogin());
+        Long userId = (user.isPresent())? user.get().getId() : -1;
+
+        if(authorizationChecker.checkPassword(userId, request.getUser().getPassword()))
+            return new Response(200, new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(user.get()));
         return new Response(-1, "Incorrect login or password");
     }
 

@@ -1,6 +1,8 @@
 package com.example.etas_server.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.google.gson.annotations.Expose;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,15 +15,18 @@ public class User
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
+    @Expose
     private Long id;
 
+    @Expose
     @Column(name="login")
     private String login;
 
+    @Expose
     @Column(name="password")
     private String password;
 
-    @JsonIgnore
+    @Expose
     @OneToMany(mappedBy="user")
     private Set<Dictionary> dictionaries;
 

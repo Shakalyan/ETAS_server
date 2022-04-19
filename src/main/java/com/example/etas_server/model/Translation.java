@@ -1,5 +1,9 @@
 package com.example.etas_server.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,12 +13,15 @@ public class Translation {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
+    @Expose
     private Long id;
 
     @Column(name="fl_value")
+    @Expose
     private String flValue;
 
     @Column(name="sl_value")
+    @Expose
     private String slValue;
 
     @ManyToOne(fetch=FetchType.EAGER)

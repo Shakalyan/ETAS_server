@@ -1,6 +1,9 @@
 package com.example.etas_server.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.google.gson.annotations.Expose;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,17 +15,19 @@ public class Dictionary
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
+    @Expose
     private Long id;
 
     @Column(name="name")
+    @Expose
     private String name;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="user_id")
     private User user;
 
-    @JsonIgnore
     @OneToMany(mappedBy="dictionary")
+    @Expose
     private Set<Translation> translations;
 
     public Dictionary() {
