@@ -54,12 +54,12 @@ public class TranslationController {
     }
 
     @PostMapping
-    public @ResponseBody Response add(@RequestBody Request<Translation> request)
+    public @ResponseBody Response add(@RequestBody Request<Translation> request,
+                                      @RequestParam(name="dict_id") Long dictId)
     {
         if(!authorizationChecker.checkPassword(request.getUser().getId(), request.getUser().getPassword()))
             return new Response(-1, "Incorrect user_id or password");
 
-        Long dictId = request.getData().getDictionary().getId();
         System.out.println(dictId);
         Optional<Dictionary> dictionary = dictionaryRepo.findById(dictId);
         if(!dictionary.isPresent())
