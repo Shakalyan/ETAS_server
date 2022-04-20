@@ -12,6 +12,7 @@ import com.example.etas_server.service.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -67,12 +68,12 @@ public class TranslationController {
 
         Translation translation = request.getData();
         translation.setDictionary(dictionary.get());
-        translationRepo.save(translation);
-        return new Response(200, "Successfully created");
+        translation = translationRepo.save(translation);
+        return new Response(200, translation.getId().toString());
     }
 
     @DeleteMapping
-    public @ResponseBody Response delete(@RequestBody Request<Translation> request,
+    public @ResponseBody Response delete(@RequestBody Request<Translation[]> request,
                                          @RequestParam(name="dict_id") Long dictId) {
         if(!authorizationChecker.checkPassword(request.getUser().getId(), request.getUser().getPassword()))
             return new Response(-1, "Incorrect user_id or password");
@@ -81,10 +82,11 @@ public class TranslationController {
         if(!dict.isPresent())
             return new Response(-1, "Incorrect dict_id");
 
-        Long translationId = request.getData().getId();
-        if(!dict.get().getTranslations().removeIf(t -> t.getId().equals(translationId)))
-            return new Response(-1, "Dictionary doesn't contain translation with this id");
-        translationRepo.deleteById(translationId);
+        for(Translation translation : request.getData()) {
+            long translationId = translation.getId();
+            dict.get().getTranslations().removeIf(t -> t.getId().equals(translationId));
+            translationRepo.deleteById(translationId);
+        }
         return new Response(200, "Successfully deleted");
     }
 

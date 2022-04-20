@@ -39,12 +39,9 @@ public class DictionaryController {
         User user = userRepo.findById(request.getUser().getId()).get();
         Dictionary dictionary = request.getData();
         dictionary.setUser(user);
-        dictionaryRepo.save(dictionary);
+        dictionary = dictionaryRepo.save(dictionary);
 
-        for (Dictionary dict : user.getDictionaries())
-            System.out.println(dict.toString());
-
-        return new Response(200, "Dictionary has been added");
+        return new Response(200, dictionary.getId().toString());
     }
 
     @DeleteMapping
