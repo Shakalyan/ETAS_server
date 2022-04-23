@@ -27,5 +27,4 @@ public class RegistrationController {
         userRepo.save(user);
         return new Response(200, "Successfully registered");
     }
-
 }
