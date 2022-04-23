@@ -27,6 +27,10 @@ public class User
     private String password;
 
     @Expose
+    @Column(name="salt")
+    private String salt;
+
+    @Expose
     @OneToMany(mappedBy="user")
     private Set<Dictionary> dictionaries;
 
@@ -69,6 +73,14 @@ public class User
 
     public void setDictionaries(Set<Dictionary> dictionaries) {
         this.dictionaries = dictionaries;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     @Override

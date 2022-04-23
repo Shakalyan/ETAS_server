@@ -37,4 +37,12 @@ public class AuthenticationController {
         return new Response(-1, "Incorrect login or password");
     }
 
+    @GetMapping
+    public @ResponseBody Response getSalt(@RequestParam String login) {
+        Optional<User> user = userRepo.findByLogin(login);
+        if(user.isPresent())
+           return new Response(200, user.get().getSalt());
+        return new Response(-1, "Incorrect login");
+    }
+
 }
